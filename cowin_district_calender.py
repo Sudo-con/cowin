@@ -9,7 +9,7 @@ from os import environ
 bot_token=environ['BOT_TOKEN']
 group_id=environ['GROUP_ID']
 district_id=environ['DISTRICT_ID']
-pincode=environ['PINCODE']
+pincode=int(environ['PINCODE'])
 
 
 cowin_base_url= "https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByDistrict"
