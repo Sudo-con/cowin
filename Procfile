@@ -1,1 +1,1 @@
-worker: cowin_district_calender.py
+worker: python cowin_district_calender.py
