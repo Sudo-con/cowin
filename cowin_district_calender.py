@@ -6,10 +6,10 @@ from datetime import datetime
 import time
 from os import environ
 
-bot_token=environ['bot_token']
-group_id=environ['group_id']
-district_id=environ['district_id']
-pincode=environ['pincode']
+bot_token=environ['BOT_TOKEN']
+group_id=environ['GROUP_ID']
+district_id=environ['DISTRICT_ID']
+pincode=environ['PINCODE']
 
 
 cowin_base_url= "https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByDistrict"
