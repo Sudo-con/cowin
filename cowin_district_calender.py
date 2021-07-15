@@ -28,11 +28,11 @@ def fetch_data_from_cowin(district_id):
 def extract_availabilty_data(response):
 	response_json=response.json()
 	for center in response_json["centers"]:
-		if center["pincode"]==pincode[district_id.index(dist)]:
+		if center["pincode"]==pincode[district_id.index(dist)] or pincode[district_id.index(dist)]==0:
 			for session in center["sessions"]:
 				if session["available_capacity"]>0:
-					message="Center name: {}\nDate: {}\nVaccine: {}\nSlots: {}\nAge limit: {}".format(
-						center["name"]+' '+center["address"],session["date"],session["vaccine"],session["available_capacity"],session["min_age_limit"])
+					message="Center name: {}\nPincode: {}\nDate: {}\nVaccine: {}\nSlots: {}\nAge limit: {}".format(
+						center["name"]+' '+center["address"],center["pincode"],session["date"],session["vaccine"],session["available_capacity"],session["min_age_limit"])
 					if center["fee_type"]=="Paid":
 						for fee in center["vaccine_fees"]:
 							if session["vaccine"]==fee["vaccine"]:
