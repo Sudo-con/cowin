@@ -30,7 +30,7 @@ def extract_availabilty_data(response):
 	for center in response_json["centers"]:
 		if center["pincode"]==pincode[district_id.index(dist)]:
 			for session in center["sessions"]:
-				if session["available_capacity"]>0:
+				if session["available_capacity"]>=0:
 					message="Center name: {}\nDate: {}\nVaccine: {}\nSlots: {}\nAge limit: {}".format(
 						center["name"],session["date"],session["vaccine"],session["available_capacity"],session["min_age_limit"])
 					if message not in oldmsg:
