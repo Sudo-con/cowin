@@ -33,8 +33,13 @@ def extract_availabilty_data(response):
 				if session["available_capacity"]>0:
 					message="Center name: {}\nDate: {}\nVaccine: {}\nSlots: {}\nAge limit: {}".format(
 						center["name"]+' '+center["address"],session["date"],session["vaccine"],session["available_capacity"],session["min_age_limit"])
+					if center["fee_type"]=="Paid":
+						for fee in center["vaccine_fees"]:
+							if session["vaccine"]==fee["vaccine"]:
+								message+="\nCost: {}".format('₹'+fee["fee"])
 					if message not in oldmsg:
-						oldmsg.append(message)	
+						oldmsg.append(message)
+						print(message+'\n'+group_id[district_id.index(dist)])
 						send_message_telegram(message)
 
 def send_message_telegram(message):
