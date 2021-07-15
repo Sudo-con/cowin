@@ -41,6 +41,7 @@ def extract_availabilty_data(response):
 						oldmsg.append(message)
 						print(message+'\n'+group_id[district_id.index(dist)])
 						send_message_telegram(message)
+						time.sleep(1)
 
 def send_message_telegram(message):
 	final_telegram_url=api_url_telegram.replace("{chat_id}",group_id[district_id.index(dist)])
