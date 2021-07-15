@@ -7,11 +7,11 @@ import time
 from os import environ
 
 bot_token=environ['BOT_TOKEN']
-group_id=environ['GROUP_ID']
-district_id=environ['DISTRICT_ID']
-pincode=int(environ['PINCODE'])
+group_id=[i for i in environ['GROUP_ID'].split(",")]
+district_id=[int(i) for i in environ['DISTRICT_ID'].split(",")]
+pincode=[int(i) for i in environ['PINCODE'].split(",")]
 
-
+oldmsg=[]
 cowin_base_url= "https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByDistrict"
 now=datetime.now()
 today_date=now.strftime("%d-%m-%Y")
@@ -28,20 +28,23 @@ def fetch_data_from_cowin(district_id):
 def extract_availabilty_data(response):
 	response_json=response.json()
 	for center in response_json["centers"]:
-		if center["pincode"]==pincode:
+		if center["pincode"]==pincode[district_id.index(dist)]:
 			for session in center["sessions"]:
-				if session["available_capacity_dose1"]>0 and session["min_age_limit"]==18:
-					message="Center id: {}\nCenter name: {}\nDate: {}\nVaccine: {}\nSlots: {}\nAge limit: {}".format(center["center_id"],
+				if session["available_capacity"]>0:
+					message="Center name: {}\nDate: {}\nVaccine: {}\nSlots: {}\nAge limit: {}".format(
 						center["name"],session["date"],session["vaccine"],session["available_capacity"],session["min_age_limit"])
-					send_message_telegram(message)
+					if message not in oldmsg:
+						oldmsg.append(message)	
+						send_message_telegram(message)
 
 def send_message_telegram(message):
-	final_telegram_url=api_url_telegram.replace("{chat_id}",group_id)
+	final_telegram_url=api_url_telegram.replace("{chat_id}",group_id[district_id.index(dist)])
 	final_telegram_url=final_telegram_url+message;
 	response=requests.get(final_telegram_url)
 	print(response)
 
 if __name__=="__main__":
 	while(1==1):
-		fetch_data_from_cowin(district_id)
+		for dist in district_id:	
+			fetch_data_from_cowin(dist)
 		time.sleep(300)
