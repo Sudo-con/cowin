@@ -35,11 +35,11 @@ def extract_availabilty_data(response):
 					final_map_url=google_maps_api+(str(center["name"])+" "+str(center["address"])).replace(' ','+')
 					message="Center name: {}\nPincode: {}\nDate: {}\nVaccine: {}\nSlots: {}\nAge limit: {}".format(
 						'['+center["name"]+' '+center["address"]+']('+final_map_url+')',center["pincode"],session["date"],session["vaccine"],session["available_capacity"],session["min_age_limit"])
-					message+="&parse_mode=Markdown&disable_web_page_preview=True"
 					if center["fee_type"]=="Paid":
 						for fee in center["vaccine_fees"]:
 							if session["vaccine"]==fee["vaccine"]:
 								message+="\nCost: {}".format('₹'+fee["fee"])
+					message+="&parse_mode=Markdown&disable_web_page_preview=True"
 					if message not in oldmsg:
 						oldmsg.append(message)
 						print(message+'\n'+group_id[district_id.index(dist)])
