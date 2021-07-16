@@ -17,6 +17,7 @@ now=datetime.now()
 today_date=now.strftime("%d-%m-%Y")
 headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36"}
 api_url_telegram = "https://api.telegram.org/bot"+bot_token+"/sendMessage?chat_id={chat_id}&text="
+google_maps_api="https://www.google.com/maps/search/?api=1%26amp;query="
 
 def fetch_data_from_cowin(district_id):
 	query_params="?district_id={}&date={}".format(district_id,today_date)
@@ -31,8 +32,10 @@ def extract_availabilty_data(response):
 		if center["pincode"]==pincode[district_id.index(dist)] or pincode[district_id.index(dist)]==0:
 			for session in center["sessions"]:
 				if session["available_capacity"]>0:
+					final_map_url=google_maps_api+(str(center["name"])+" "+str(center["address"])).replace(' ','+')
 					message="Center name: {}\nPincode: {}\nDate: {}\nVaccine: {}\nSlots: {}\nAge limit: {}".format(
-						center["name"]+' '+center["address"],center["pincode"],session["date"],session["vaccine"],session["available_capacity"],session["min_age_limit"])
+						'['+center["name"]+' '+center["address"]+']('+final_map_url+')',center["pincode"],session["date"],session["vaccine"],session["available_capacity"],session["min_age_limit"])
+					message+="&parse_mode=Markdown&disable_web_page_preview=True"
 					if center["fee_type"]=="Paid":
 						for fee in center["vaccine_fees"]:
 							if session["vaccine"]==fee["vaccine"]:
